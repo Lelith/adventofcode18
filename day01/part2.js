@@ -1,35 +1,34 @@
-var fs = require('fs');
+const fs = require('fs');
 
 function modData(data) {
-  const formatData = data.split("\n").map(function(item) {
-    return parseInt(item);
-  });
+  const formatData = data.split('\n').map(item => parseInt(item.trim(), 10));
   return formatData;
 }
 
-function calculateResult(data){
+function calculateResult(data) {
   let result = 0;
-  let frequency = []
+  const frequency = [];
   let match = false;
 
-  while(!match) {
-      for(let i = 0; i < data.length; i++) {
-        result +=data[i];
-        if(frequency.includes(result)) {
-          match = true;
-          i = data.length;
-          return result;
-        }
-        frequency.push(result);
+  while (!match) {
+    for (let i = 0; i < data.length; i += 1) {
+      result += data[i];
+      if (frequency.includes(result)) {
+        match = true;
+        i = data.length;
+        return result;
+      }
+      frequency.push(result);
     }
   }
+  return result;
 }
 
 try {
-    let data = fs.readFileSync('example.txt', 'utf8');
-    data = modData(data);
-    const result = calculateResult(data);
-    console.log(result);
-} catch(e) {
-    console.log('Error:', e.stack);
+  let data = fs.readFileSync('example.txt', 'utf8');
+  data = modData(data);
+  const result = calculateResult(data);
+  console.log(result);
+} catch (e) {
+  console.log('Error:', e.stack);
 }
